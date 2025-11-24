@@ -1,216 +1,155 @@
-# Vectr
+# Stash Search
 
-**Vectr** is an AI-powered image search application template that automatically generates descriptions for uploaded images and indexes them for semantic search.
+**Stash Search** is an AI-powered image management platform with advanced visibility controls and semantic search capabilities.
 
 ## ✨ Features
 
-- 📤 **Drag-and-drop image uploads** with Vercel Blob Storage
-- 🤖 **AI-powered image descriptions** using Grok 2 Vision
-- 🔍 **Semantic search** with Upstash Vector Search (stores metadata too!)
-- 🔄 **Resilient processing** with Vercel Workflow automatic retries
-- 🎨 **Beautiful UI** built with shadcn/ui and Tailwind CSS
-- 💰 **Incredibly cheap** - No database needed!
+- 🎨 **Interactive Dashboard** with gallery, settings, and data visualization
+- 🔒 **Private/Public Image Visibility** - Separate user-generated content from public images
+- 🖼️ **Gallery Management** - Browse, search, and manage images through intuitive sidebar navigation
+- 🤖 **AI-Powered Descriptions** using Grok 2 Vision with metadata enhancement
+- 🔍 **Semantic Search** with Upstash Vector Search and visibility filtering
+- 🔄 **Resilient Processing** with Vercel Workflow automatic retries and error handling
+- 🚀 **Modern UI** built with shadcn/ui and Tailwind CSS
+- 📊 **Dashboard Analytics** with interactive charts and data insights
 
-## 🚀 How It Works
+## 🎯 Core Use Case
 
-When you upload an image, Vectr automatically:
+Stash Search manages different types of image collections:
 
-1. 💾 Stores the image in Vercel Blob Storage
-2. 🧠 Generates a detailed description using Grok 2 Vision AI
-3. 🔎 Indexes the description AND metadata in Upstash for semantic search
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant App as Next.js App
-    participant Workflow as Vercel Workflow
-    participant Blob as Vercel Blob
-    participant AI as Grok Vision AI
-    participant Search as Upstash Search
-
-    User->>App: Upload Image (FormData)
-    App->>Workflow: POST /api/upload
-
-    Note over Workflow: Start Workflow
-
-    Workflow->>Blob: Upload to Storage (Step 1)
-    Note over Blob: Max 3 retries<br/>Rate limit handling
-    Blob-->>Workflow: Blob URL + Metadata
-
-    Workflow->>AI: Generate Description (Step 2)
-    Note over AI: Max 5 retries<br/>Rate limit handling
-    AI-->>Workflow: Image Description
-
-    Workflow->>Search: Index with Metadata (Step 3)
-    Note over Search: Max 5 retries<br/>Stores description + blob metadata
-    Search-->>Workflow: Success
-
-    Workflow-->>App: 200 OK
-
-    User->>App: Search Images
-    App->>Search: Semantic Query
-    Search-->>App: Results with Metadata
-    App-->>User: Display Results
-```
+1. **Private Images** - AI-generated images shown immediately to users, stored temporarily with admin access
+2. **Public Images** - Pre-generated or discarded images made available to all users
+3. **Admin Oversight** - Staff can review and moderate all content regardless of visibility
 
 ## 🏗️ Architecture
 
+### Image Lifecycle
+
+```
+1. Image Generation → Private storage (visibility: "private")
+2. Initial Display → User sees immediate private access
+3. User Decision:
+   ├── Save/Download → Image remains private
+   └── Discard → After 7+ days → Transitions to public (visibility: "public")
+```
+
 ### Workflow Steps
 
-Each step in the image processing workflow is isolated and runs on a separate serverless function with automatic retries:
+**Upload/Generation Flow:**
+1. 📤 **Upload Image** - Store in Vercel Blob Storage
+2. 🤖 **Generate Description** - AI analysis with Grok 2 Vision
+3. 🏷️ **Index with Metadata** - Upstash semantic search with visibility controls
 
-**Step 1: Upload Image** (`upload-image.ts`)
-- 💾 Uploads to Vercel Blob Storage
-- ⏱️ Handles rate limiting with 1-minute retry delays
-- 🔄 Maximum 3 retry attempts
-- ❌ Fatal error on quota exceeded or invalid files
-
-**Step 2: Generate Description** (`generate-description.ts`)
-- 🤖 Uses Grok 2 Vision AI to analyze the image
-- ⏱️ Handles rate limiting with 5-minute retry delays
-- 🔄 Maximum 5 retry attempts
-- ❌ Fatal error on invalid/unsupported images
-
-**Step 3: Index Image** (`index-image.ts`)
-- 🔎 Indexes description AND blob metadata in Upstash
-- 💾 Stores all image data (url, size, contentType, etc.) as metadata
-- ⏱️ Handles rate limiting with 1-minute retry delays
-- 🔄 Maximum 5 retry attempts
-- ❌ Fatal error on invalid data
-
-### Error Handling
-
-Vectr uses sophisticated error handling to ensure reliable processing:
-
-- 🔄 **RetryableError**: Temporary failures (rate limits, network issues, timeouts)
-- ❌ **FatalError**: Permanent failures (invalid data, constraint violations)
-- 📊 **Context-aware retries**: Each step tracks attempt count and timestamps
-- 🎯 **Smart HTTP responses**: 400 for fatal errors, 500 for retryable errors
+**Search Flow:**
+- **Public Search**: `visibility = 'public'` (open access)
+- **Private Search**: `userId = 'xyz' AND visibility = 'private'` (user-specific)
+- **Admin Search**: Access all images regardless of visibility
 
 ## 🛠️ Tech Stack
 
 - ⚡ **Framework**: Next.js 15 with App Router and React 19
-- 🔄 **Workflow**: Vercel Workflow (alpha)
+- 🔄 **Workflow**: Vercel Workflow with visibility metadata
 - 🤖 **AI**: Grok 2 Vision via Vercel AI SDK
-- 🔍 **Search & Storage**: Upstash Vector Search (stores metadata too!)
-- 💾 **Blob Storage**: Vercel Blob Storage
+- 🔍 **Search Engine**: Upstash Vector Search with metadata filtering
+- 💾 **Storage**: Vercel Blob Storage
 - 🎨 **UI**: shadcn/ui + Tailwind CSS 4
-- 🔒 **Type Safety**: TypeScript + Zod
+- 📊 **Charts**: Interactive data visualization components
+- 🔒 **Type Safety**: TypeScript with enhanced error handling
 
-## 🚀 Deploy to Vercel
-
-The easiest way to deploy Vectr is using the Vercel Marketplace:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-description=A+free%2C+open-source+template+for+building+natural+language+image+search+on+the+AI+Cloud.&demo-image=https%3A%2F%2Fvectr.store%2Fopengraph-image.png&demo-title=vectr.store&demo-url=https%3A%2F%2Fvectr.store%2F&from=templates&project-name=Vectr&repository-name=vectr&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fvectr&products=%5B%7B%22type%22%3A%22integration%22%2C%22protocol%22%3A%22storage%22%2C%22productSlug%22%3A%22upstash-search%22%2C%22integrationSlug%22%3A%22upstash%22%7D%2C%7B%22type%22%3A%22blob%22%7D%5D&skippable-integrations=0)
-
-During deployment, you'll be prompted to set up:
-
-1. 🔍 **Upstash Vector Search** - Semantic search + metadata storage
-2. 💾 **Vercel Blob Storage** - Image storage
-
-Both services have generous free tiers and will be automatically configured. No database needed!
-
-## 💻 Local Development
+## 🚀 Quick Start
 
 ### Prerequisites
-
 - 🟢 Node.js 18+
 - 📦 pnpm (recommended)
 
-### Setup
-
-1. Clone the repository:
+### Installation
 
 ```bash
-git clone https://github.com/your-username/vectr.git
-cd vectr
-```
+# Clone the repository
+git clone https://github.com/Tattzy25/stash-search.git
+cd stash-search
 
-2. Install dependencies:
-
-```bash
+# Install dependencies
 pnpm install
+
+# Set up environment
+cp .env.example .env.local
+
+# Configure required services
 ```
 
-3. Set up environment variables:
-
-Create a `.env.local` file with:
+### Environment Setup
 
 ```bash
-# Upstash Search
+# Upstash Search (for semantic search + metadata)
 UPSTASH_SEARCH_URL="https://..."
 UPSTASH_SEARCH_TOKEN="..."
 
-# Vercel Blob
+# Vercel Blob (for image storage)
 BLOB_READ_WRITE_TOKEN="..."
 
-# AI Gateway Key (only needed locally)
-AI_GATEWAY_API_KEY="..."
-```
+# AI Gateway Key (for local development)
+XAI_API_KEY="..."
 
-4. Run the development server:
-
-```bash
+# Start development server
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see your app.
+Visit [http://localhost:3000/dashboard](http://localhost:3000/dashboard) to access the gallery interface.
 
-## 📜 Scripts
-
-- 🚀 `pnpm dev` - Start development server with Turbopack
-- 🏗️ `pnpm build` - Build for production
-- ✅ `pnpm check` - Run linting checks
-- ✨ `pnpm format` - Format code with Biome
-
-## 📁 Project Structure
+## 🗂️ Project Structure
 
 ```
-vectr/
+stash-search/
 ├── app/
+│   ├── dashboard/
+│   │   ├── gallery/             # Main gallery page with ResultsClient
+│   │   ├── gallery-data/        # Gallery analytics & insights
+│   │   ├── settings/            # Configuration & preferences
+│   │   ├── layout.tsx           # Dashboard layout with sidebar
+│   │   └── page.tsx             # Dashboard overview
 │   ├── actions/
-│   │   └── search.ts                 # Server action for search
-│   ├── api/
-│   │   └── upload/
-│   │       ├── route.ts              # Workflow route handler
-│   │       ├── upload-image.ts       # Step 1: Upload to Blob
-│   │       ├── generate-description.ts  # Step 2: AI description
-│   │       └── index-image.ts        # Step 3: Index with metadata
-│   ├── layout.tsx
-│   └── page.tsx
+│   │   └── search.ts            # Enhanced search with visibility filtering
+│   └── api/upload/
+│       ├── process-image.ts     # Main workflow starting point
+│       ├── upload-image.ts      # Step 1: Blob storage
+│       ├── generate-description.ts # Step 2: AI description
+│       └── index-image.ts       # Step 3: Upstash indexing with metadata
 ├── components/
-│   ├── header.tsx
-│   ├── results.tsx
-│   ├── upload-button.tsx
-│   └── uploaded-images-provider.tsx
-├── lib/
-│   └── utils.ts
-└── package.json
+│   ├── app-sidebar.tsx          # Dashboard navigation
+│   ├── results.client.tsx       # Gallery component with search
+│   ├── chart-area-interactive.tsx # Dashboard data visualization
+│   └── upload-button.tsx        # Image upload interface
+└── .github/instructions.md      # Development guidelines
 ```
 
-## 🔐 Environment Variables
+## 🔧 Key Features
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `UPSTASH_SEARCH_URL` | Upstash Vector Search endpoint | Yes |
-| `UPSTASH_SEARCH_TOKEN` | Upstash authentication token | Yes |
-| `BLOB_READ_WRITE_TOKEN` | Vercel Blob Storage token | Yes |
-| `XAI_API_KEY` | xAI API key for Grok Vision | Yes |
+### Visibility Control System
+- **Private Images**: User-specific content, temporary storage
+- **Public Images**: Shared content available to all users
+- **Admin Override**: Staff access to all content types
 
-## 📊 Observability
+### Semantic Search with Filtering
+```typescript
+// Example search queries with filters
+const publicResults = await search({ query: "lions", visibility: "public" });
+const privateResults = await search({
+  query: "cats",
+  visibility: "private",
+  userId: "user123"
+});
+```
 
-Vectr includes comprehensive logging for monitoring and debugging:
-
-- 🔄 `[WORKFLOW]` - Workflow-level events and timing
-- 🔧 `[stepId]` - Step-level events with unique identifiers
-- 🌐 `[API]` - HTTP request/response logging
-
-All logs include timestamps, attempt counts, and duration metrics.
+### Workflow Observability
+- 🔄 `[WORKFLOW]` - Process-level timing and success tracking
+- 🔧 `[stepId]` - Individual step execution with retry counts
+- 🌐 Network and error handling with detailed logging
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. Our [Contributing Guide](.github/CONTRIBUTING.md) has more information on how to get started.
+This project follows AI-first development practices as outlined in `.github/instructions.md`. Contributions should maintain code quality, visibility controls, and workflow reliability.
 
 ## 📄 License
 
-MIT
+This project is part of the Tattzy25 portfolio repository.
