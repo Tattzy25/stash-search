@@ -11,6 +11,10 @@ type ImageMetadata = {
   visibility: "public" | "private";
   userId?: string;
   expiresAt?: string; // For private images with expiration
+  title?: string; // Clean title for display
+  indexedAt?: string; // When image was indexed
+  originalPrompt?: string; // Full AI description (private)
+  marketingDescription?: string; // Commercial description (public)
 };
 
 export const indexImage = async (

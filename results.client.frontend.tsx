@@ -152,9 +152,19 @@ export const ResultsClient = ({ defaultData }: ResultsClientProps) => {
           disabled={isPending || !hasImages}
           id="search"
           name="search"
-          placeholder="Search by description"
+          placeholder="Search tattoo designs"
           required
         />
+        {!isPending && (
+          <Button
+            className="shrink-0"
+            disabled={!hasImages}
+            size="icon"
+            type="submit"
+          >
+            <UploadIcon className="size-4" />
+          </Button>
+        )}
         {isPending && (
           <Button className="shrink-0" disabled size="icon" variant="ghost">
             <Loader2Icon className="size-4 animate-spin" />
