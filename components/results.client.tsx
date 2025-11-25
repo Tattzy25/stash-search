@@ -29,6 +29,12 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "./ui/empty";
 import { Input } from "./ui/input";
 import { UploadButton } from "./upload-button";
 import { useUploadedImages } from "./uploaded-images-provider";
+import { Card } from "@/components/ui/card";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 
 type ResultsClientProps = {
   defaultData: ListBlobResult["blobs"];
@@ -90,75 +96,91 @@ export const ResultsClient = ({ defaultData }: ResultsClientProps) => {
   }, []);
 
   return (
-    <>
-      {hasImages ? (
-        <div className="columns-1 gap-4 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-4 2xl:columns-4">
-          {galleryItems.map((item, index) => (
-            <Preview
-              key={`${item.url}-${index}`}
-              onClick={() => openLightbox(index)}
-              priority={index < PRIORITY_COUNT}
-              selected={lightboxIndex === index}
-              url={item.url}
-            />
-          ))}
-        </div>
-      ) : (
-        <Empty className="h-full min-h-[50vh] rounded-lg border">
-          <EmptyHeader className="max-w-none">
-            <div className="relative isolate mb-8 flex">
-              <div className="-rotate-12 translate-x-2 translate-y-2 rounded-full border bg-background p-3 shadow-xs">
-                <ImageIcon className="size-5 text-muted-foreground" />
-              </div>
-              <div className="z-10 rounded-full border bg-background p-3 shadow-xs">
-                <UploadIcon className="size-5 text-muted-foreground" />
-              </div>
-              <div className="-translate-x-2 translate-y-2 rotate-12 rounded-full border bg-background p-3 shadow-xs">
-                <FileIcon className="size-5 text-muted-foreground" />
-              </div>
+    <div className="h-[calc(100svh-var(--header-height))] md:h-[calc(100svh-var(--header-height)-1rem)] w-full overflow-hidden">
+      <ResizablePanelGroup direction="horizontal" className="h-full w-full">
+        <ResizablePanel defaultSize={20}>
+          <div className="h-full overflow-y-auto p-4">
+            <Card className="min-h-full w-full">
+              {/* Left panel content */}
+            </Card>
+          </div>
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={80}>
+          <div className="relative h-full w-full">
+            <div className="h-full w-full overflow-y-auto p-4 pb-24">
+              {hasImages ? (
+                <div className="columns-1 gap-4 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-4 2xl:columns-4">
+                  {galleryItems.map((item, index) => (
+                    <Preview
+                      key={`${item.url}-${index}`}
+                      onClick={() => openLightbox(index)}
+                      priority={index < PRIORITY_COUNT}
+                      selected={lightboxIndex === index}
+                      url={item.url}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <Empty className="h-full min-h-[50vh] rounded-lg border">
+                  <EmptyHeader className="max-w-none">
+                    <div className="relative isolate mb-8 flex">
+                      <div className="-rotate-12 translate-x-2 translate-y-2 rounded-full border bg-background p-3 shadow-xs">
+                        <ImageIcon className="size-5 text-muted-foreground" />
+                      </div>
+                      <div className="z-10 rounded-full border bg-background p-3 shadow-xs">
+                        <UploadIcon className="size-5 text-muted-foreground" />
+                      </div>
+                      <div className="-translate-x-2 translate-y-2 rotate-12 rounded-full border bg-background p-3 shadow-xs">
+                        <FileIcon className="size-5 text-muted-foreground" />
+                      </div>
+                    </div>
+                    <EmptyTitle>No images found</EmptyTitle>
+                    <EmptyDescription>
+                      Upload some images with the{" "}
+                      <ImageUpIcon className="inline size-4" /> button below to get
+                      started!
+                    </EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
+              )}
             </div>
-            <EmptyTitle>No images found</EmptyTitle>
-            <EmptyDescription>
-              Upload some images with the{" "}
-              <ImageUpIcon className="inline size-4" /> button below to get
-              started!
-            </EmptyDescription>
-          </EmptyHeader>
-        </Empty>
-      )}
 
-      <form
-        action={formAction}
-        className="-translate-x-1/2 fixed bottom-8 left-1/2 flex w-full max-w-sm items-center gap-1 rounded-full bg-background p-1 shadow-xl sm:max-w-lg lg:ml-[182px]"
-      >
-        {isShowingSearchResults && (
-          <Button
-            className="shrink-0 rounded-full"
-            disabled={isPending}
-            onClick={reset}
-            size="icon"
-            type="button"
-            variant="ghost"
-          >
-            <ArrowLeftIcon className="size-4" />
-          </Button>
-        )}
-        <Input
-          className="w-full rounded-full border-none bg-secondary shadow-none outline-none"
-          disabled={isPending || !hasImages}
-          id="search"
-          name="search"
-          placeholder="Search by description"
-          required
-        />
-        {isPending ? (
-          <Button className="shrink-0" disabled size="icon" variant="ghost">
-            <Loader2Icon className="size-4 animate-spin" />
-          </Button>
-        ) : (
-          <UploadButton />
-        )}
-      </form>
+            <form
+              action={formAction}
+              className="-translate-x-1/2 absolute bottom-8 left-1/2 flex w-full max-w-sm items-center gap-1 rounded-full bg-background p-1 shadow-xl sm:max-w-lg z-10"
+            >
+              {isShowingSearchResults && (
+                <Button
+                  className="shrink-0 rounded-full"
+                  disabled={isPending}
+                  onClick={reset}
+                  size="icon"
+                  type="button"
+                  variant="ghost"
+                >
+                  <ArrowLeftIcon className="size-4" />
+                </Button>
+              )}
+              <Input
+                className="w-full rounded-full border-none bg-secondary shadow-none outline-none"
+                disabled={isPending || !hasImages}
+                id="search"
+                name="search"
+                placeholder="Search by description"
+                required
+              />
+              {isPending ? (
+                <Button className="shrink-0" disabled size="icon" variant="ghost">
+                  <Loader2Icon className="size-4 animate-spin" />
+                </Button>
+              ) : (
+                <UploadButton />
+              )}
+            </form>
+          </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
 
       <ImageLightbox
         activeIndex={lightboxIndex}
@@ -166,7 +188,7 @@ export const ResultsClient = ({ defaultData }: ResultsClientProps) => {
         onClose={closeLightbox}
         onSelect={handleLightboxSelect}
       />
-    </>
+    </div>
   );
 };
 
