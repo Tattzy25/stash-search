@@ -12,9 +12,7 @@ export const UploadButton = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const isDemo =
-    typeof window !== "undefined" &&
-    window.location.hostname.includes("vectr.store");
+  const isDemo = false;
 
   const cancelUpload = () => {
     if (abortControllerRef.current) {
@@ -230,6 +228,7 @@ export const UploadButton = () => {
     <>
       <input
         accept="image/*"
+        aria-label="Upload images"
         className="hidden"
         id="upload-input"
         multiple

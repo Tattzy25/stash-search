@@ -1,6 +1,6 @@
-# Stash Search
+# OPS.TaTTTy
 
-**Stash Search** is an AI-powered image management platform with advanced visibility controls and semantic search capabilities.
+**OPS.TaTTTy** is an AI-powered image management platform with advanced visibility controls and semantic search capabilities.
 
 ## ✨ Features
 
@@ -15,7 +15,7 @@
 
 ## 🎯 Core Use Case
 
-Stash Search manages different types of image collections:
+OPS.TaTTTy manages different types of image collections:
 
 1. **Private Images** - AI-generated images shown immediately to users, stored temporarily with admin access
 2. **Public Images** - Pre-generated or discarded images made available to all users
@@ -66,8 +66,8 @@ Stash Search manages different types of image collections:
 
 ```bash
 # Clone the repository
-git clone https://github.com/Tattzy25/stash-search.git
-cd stash-search
+git clone https://github.com/Tattzy25/ops-tattty.git
+cd ops-tattty
 
 # Install dependencies
 pnpm install
@@ -100,7 +100,7 @@ Visit [http://localhost:3000/dashboard](http://localhost:3000/dashboard) to acce
 ## 🗂️ Project Structure
 
 ```
-stash-search/
+ops-tattty/
 ├── app/
 │   ├── dashboard/
 │   │   ├── gallery/             # Main gallery page with ResultsClient

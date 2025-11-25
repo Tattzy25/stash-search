@@ -38,21 +38,27 @@ export const search = async (
     // Build filter conditions based on visibility and user permissions
     const filters: string[] = [];
 
+    // For debugging, don't filter by visibility
     // Always filter by visibility - default to public if not specified
-    const visibility = visibilityFilter || "public";
-    filters.push(`visibility = '${visibility}'`);
+    // const visibility = visibilityFilter || "public";
+    // filters.push(`visibility = '${visibility}'`);
 
     // Add user filter for private images
-    if (userIdFilter && visibility === "private") {
-      filters.push(`userId = '${userIdFilter}'`);
-    }
+    // if (userIdFilter && visibility === "private") {
+    //   filters.push(`userId = '${userIdFilter}'`);
+    // }
 
-    const filterQuery = filters.join(" AND ");
+    const filterQuery = filters.length > 0 ? filters.join(" AND ") : "";
 
-    console.log("Searching index for query:", query, "with filter:", filterQuery);
+    console.log(
+      "Searching index for query:",
+      query,
+      "with filter:",
+      filterQuery
+    );
     const results = await index.search({
       query,
-      filter: filterQuery
+      filter: filterQuery,
     });
 
     console.log("Results:", results);

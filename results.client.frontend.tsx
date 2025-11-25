@@ -32,7 +32,6 @@ import {
   EmptyTitle,
 } from "./components/ui/empty";
 import { Input } from "./components/ui/input";
-import { UploadButton } from "./components/upload-button";
 import { useUploadedImages } from "./components/uploaded-images-provider";
 
 type ResultsClientProps = {

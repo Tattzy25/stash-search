@@ -4,8 +4,8 @@ import { Results } from "@/components/results";
 import { UploadedImagesProvider } from "@/components/uploaded-images-provider";
 
 export const metadata: Metadata = {
-  title: "vectr",
-  description: "vectr",
+  title: "OPS.TaTTTy",
+  description: "AI-powered image management platform with semantic search",
 };
 
 const ImagesSkeleton = () => (

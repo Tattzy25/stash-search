@@ -6,7 +6,7 @@ import data from "./data.json" with { type: "json" };
 
 export default function Page() {
   return (
-    <div className="flex flex-1 flex-col h-[calc(100svh-var(--header-height))] md:h-[calc(100svh-var(--header-height)-1rem)] overflow-hidden">
+    <div className="flex h-[calc(100svh-var(--header-height))] flex-1 flex-col overflow-hidden md:h-[calc(100svh-var(--header-height)-1rem)]">
       <div className="h-full overflow-y-auto">
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">

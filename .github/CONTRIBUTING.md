@@ -1,11 +1,11 @@
-# Contributing to Vectr
+# Contributing to OPS.TaTTTy
 
-Thank you for your interest in contributing to Vectr! We're excited to have you help us build a better AI-powered image search application.
+Thank you for your interest in contributing to OPS.TaTTTy! We're excited to have you help us build a better AI-powered image search application.
 
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/your-username/vectr.git`
+2. Clone your fork: `git clone https://github.com/your-username/ops-tattty.git`
 3. Install dependencies: `pnpm install`
 4. Set up your environment variables (see [README.md](../README.md#setup))
 5. Create a new branch: `git checkout -b feature/your-feature-name`
@@ -145,6 +145,6 @@ Please be respectful and constructive in all interactions. We're building a welc
 
 ## License
 
-By contributing to Vectr, you agree that your contributions will be licensed under the MIT License.
+By contributing to OPS.TaTTTy, you agree that your contributions will be licensed under the MIT License.
 
-Thank you for contributing to Vectr!
+Thank you for contributing to OPS.TaTTTy!

@@ -7,11 +7,10 @@ export const Header = () => (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <ImageUpIcon className="size-4" />
-        <h1 className="font-semibold tracking-tight">vectr.store</h1>
+        <h1 className="font-semibold tracking-tight">ops.tattty.com</h1>
       </div>
       <p className="text-balance text-muted-foreground">
-        A free, open-source template for building natural language image search
-        on the AI Cloud.
+        OPS.TaTTTy - AI-powered image management platform with semantic search.
       </p>
       <p className="text-muted-foreground text-sm italic">
         Try searching for "water" or "desert".
@@ -89,7 +88,7 @@ export const Header = () => (
       <DeployButton />
       <Button asChild size="sm" variant="outline">
         <a
-          href="https://github.com/vercel/vectr"
+          href="https://github.com/Tattzy25/ops-tattty"
           rel="noopener noreferrer"
           target="_blank"
         >
