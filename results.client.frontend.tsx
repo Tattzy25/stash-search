@@ -32,6 +32,7 @@ import {
   EmptyTitle,
 } from "./components/ui/empty";
 import { Input } from "./components/ui/input";
+import { UploadButton } from "./components/upload-button";
 import { useUploadedImages } from "./components/uploaded-images-provider";
 
 type ResultsClientProps = {
@@ -155,19 +156,19 @@ export const ResultsClient = ({ defaultData }: ResultsClientProps) => {
           placeholder="Search tattoo designs"
           required
         />
-        {!isPending && (
+        {isPending ? (
+          <Button className="shrink-0" disabled size="icon" variant="ghost">
+            <Loader2Icon className="size-4 animate-spin" />
+          </Button>
+        ) : (
           <Button
             className="shrink-0"
             disabled={!hasImages}
             size="icon"
             type="submit"
+            variant="default"
           >
             <UploadIcon className="size-4" />
-          </Button>
-        )}
-        {isPending && (
-          <Button className="shrink-0" disabled size="icon" variant="ghost">
-            <Loader2Icon className="size-4 animate-spin" />
           </Button>
         )}
       </form>
