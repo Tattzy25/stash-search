@@ -35,29 +35,12 @@ export const search = async (
   }
 
   try {
-    // Build filter conditions based on visibility and user permissions
-    const filters: string[] = [];
-
-    // Always filter by visibility - default to public if not specified
-    const visibility = visibilityFilter || "public";
-    filters.push(`visibility = '${visibility}'`);
-
-    // Add user filter for private images
-    if (userIdFilter && visibility === "private") {
-      filters.push(`userId = '${userIdFilter}'`);
-    }
-
-    const filterQuery = filters.join(" AND ");
-
     console.log(
       "Searching index for query:",
-      query,
-      "with filter:",
-      filterQuery
+      query
     );
     const results = await index.search({
       query,
-      filter: filterQuery,
     });
 
     console.log("Results:", results);
