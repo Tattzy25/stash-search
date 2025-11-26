@@ -1,6 +1,6 @@
 import { CheckCircle2Icon, ImageUpIcon } from "lucide-react";
 import { DeployButton } from "./deploy";
-import { Button } from "./ui/button";
+import { ModeToggle } from "./mode-toggle";
 
 export const Header = () => (
   <div className="flex flex-col gap-8 sm:gap-12">
@@ -86,15 +86,7 @@ export const Header = () => (
     </ul>
     <div className="flex gap-2">
       <DeployButton />
-      <Button asChild size="sm" variant="outline">
-        <a
-          href="https://github.com/Tattzy25/ops-tattty"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Source code
-        </a>
-      </Button>
+      <ModeToggle />
     </div>
   </div>
 );

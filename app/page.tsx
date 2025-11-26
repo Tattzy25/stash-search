@@ -1,39 +1,20 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import { Results } from "@/components/results";
-import { UploadedImagesProvider } from "@/components/uploaded-images-provider";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "OPS.TaTTTy",
   description: "AI-powered image management platform with semantic search",
 };
 
-const ImagesSkeleton = () => (
-  <div className="columns-1 gap-4 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-4 2xl:columns-4">
-    {Array.from({ length: 9 }, (_, idx) => {
-      // Deterministically pick an aspect ratio for each skeleton (to keep keys and aspect ratio stable)
-      const aspects = [
-        "aspect-square", // 1:1
-        "aspect-video", // 16:9
-        "aspect-[9/16]", // 9:16; needs tailwind support or define this utility in your css
-      ];
-      // Use modulo for stable assignment
-      const aspect = aspects[idx % aspects.length];
-      // Compose the className
-      const className = `mb-4 rounded-xl bg-card p-2 shadow-xl ${aspect}`;
-      return <div className={className} key={`skeleton-${aspect}-${idx}`} />;
-    })}
-  </div>
-);
-
 const Home = () => (
-  <UploadedImagesProvider>
-    <div className="relative w-full px-2 py-8 sm:px-4 sm:py-12">
-      <Suspense fallback={<ImagesSkeleton />}>
-        <Results />
-      </Suspense>
-    </div>
-  </UploadedImagesProvider>
+  <main className="flex min-h-screen items-center justify-center bg-background">
+    <Link
+      className="rounded-xl bg-red-600 px-8 py-4 font-bold text-2xl text-white shadow-lg transition hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+      href="/dashboard"
+    >
+      ENTER
+    </Link>
+  </main>
 );
 
 export default Home;
